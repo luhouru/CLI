@@ -1,5 +1,5 @@
 CLI
 ===
 
-Continuum Logging Interface
+Continuum Logging Interface<br>
  (discontinued)
