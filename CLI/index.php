@@ -471,6 +471,15 @@ mysqli_close($connect);
     });
     </script>
 	
+		    <script>
+    $(document).ready(function() {
+		$.extend( $.fn.dataTable.defaults, {
+			"iDisplayLength": 12
+		} );
+        $('#dataTables-sync').dataTable();
+    });
+    </script>
+	
 	<?php
 	$db = mysqli_connect("localhost", "root", "continuum", "reporting");
 	$result = mysqli_query($db,"SELECT file, COUNT(*) FROM (SELECT file FROM errors UNION ALL SELECT file FROM data UNION ALL SELECT file FROM php) s GROUP BY file ORDER BY COUNT(*) DESC;");
