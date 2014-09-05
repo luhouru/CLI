@@ -1,5 +1,7 @@
+            
+
             <div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-12">
                     <!-- /.panel -->
                      <div class="panel panel-primary">
                         <div class="panel-heading">
@@ -7,7 +9,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                           <div style="height:650px;" id="morris-file-bar">
+                           <div style="height:450px;" id="morris-file-bar">
 							
 						   </div>
                         </div>
@@ -15,11 +17,13 @@
                     </div>
                     <!-- /.panel -->
                 </div>
+            </div>
+             <div class="row">  
                 <!-- /.col-lg-12 -->
                 <div class="col-lg-6">
                     <!-- /.panel -->
                      <div class="panel panel-primary">
-                        <div class="panel-heading">
+                        <div class="panel-heading" >
                             <i class="fa fa-edit fa-fw"></i> Latest Logs (24H)
                         </div>
                         <!-- /.panel-heading -->
@@ -31,6 +35,8 @@
                     <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-6 -->
+
+             
 				<div class="col-lg-6">
                     <!-- /.panel -->
                      <div class="panel panel-primary">
