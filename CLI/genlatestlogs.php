@@ -4,25 +4,25 @@ function gen_latest_logs() {
 // Connecting to database
 
 $tbody = '';
-$connection = mysql_connect("localhost", "chrisluk", "continuum");
-$db_name = 'reporting';
-mysql_select_db($db_name, $connection);
+$connection = mysqli_connect("localhost", "root", "continuum", "reporting");
+/*$db_name = 'reporting';
+mysql_select_db($db_name, $connection);*/
 
 $lastday = time() - 86400;
 $query = "SELECT time, major, minor, message, file FROM errors WHERE time>=$lastday UNION ALL SELECT time, major, minor, message, file FROM data WHERE time>=$lastday UNION ALL SELECT time, major, minor, message, file FROM php WHERE time>=$lastday UNION ALL SELECT time, major, minor, message, file FROM lost WHERE time>=$lastday;";
-$result = mysql_query($query);
+$result = mysqli_query($connection, $query);
 
 if ($result === false) {
 	return (false);
 }
 
 // Display table
-while ($table = mysql_fetch_row($result)) {
-	mysql_data_seek($result, 0);
-	if (mysql_num_rows($result)) {
+while ($table = mysqli_fetch_row($result)) {
+	mysqli_data_seek($result, 0);
+	if (mysqli_num_rows($result)) {
 		$inc = 0;
-		mysql_data_seek($result, 0);
-		while($row = mysql_fetch_row($result)) {
+		mysqli_data_seek($result, 0);
+		while($row = mysqli_fetch_row($result)) {
 			//if ($inc >= $startpt && $inc <= $endpt) {
 				$tbody .= "<tr>\n";
 				$count = 1;

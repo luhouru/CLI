@@ -3,14 +3,23 @@
 date_default_timezone_set('America/New_York');
 
 //require supporting functions
-require_once("/var/www/html/CLI/tablegen.php");
+/*require_once("/var/www/html/CLI/tablegen.php");
 require_once("/var/www/html/CLI/genlogs.php");
 require_once("/var/www/html/CLI/checklogin.php");
 require_once("/var/www/html/CLI/addmessage.php");
 require_once("/var/www/html/CLI/emailcalc.php");
 require_once("/var/www/html/CLI/genchecklist.php");
 require_once("/var/www/html/CLI/genlatestlogs.php");
-require_once("/var/www/html/CLI/genlatestmsg.php");
+require_once("/var/www/html/CLI/genlatestmsg.php");*/
+
+require_once("tablegen.php");
+require_once("genlogs.php");
+require_once("checklogin.php");
+require_once("addmessage.php");
+require_once("emailcalc.php");
+require_once("genchecklist.php");
+require_once("genlatestlogs.php");
+require_once("genlatestmsg.php");
 
 //set login status and messages to default
 $loggedin = FALSE;
@@ -47,7 +56,7 @@ if(isset($_COOKIE["loggedin"]) && $_COOKIE['loggedin'] == TRUE) {
 //if they're not logged in, send them back to the login page
 //sorry!
 if (!$loggedin) {
-header('Location: http://c3-dev-08.itsupport247.net/CLI/login.php?warning='.$warning);
+header('Location: login.php?warning='.$warning);
 die();
 }
 
@@ -73,7 +82,7 @@ if (isset($_GET['action'])) {
         unset($_COOKIE['username']);
         setcookie("loggedin", null, -1);
         setcookie("username", null, -1);
-		header('Location: http://c3-dev-08.itsupport247.net/CLI/login.php?warning=loggedout');
+		header('Location: login.php?warning=loggedout');
 		die();
 	break;
 	
@@ -106,7 +115,7 @@ if (isset($_GET['action'])) {
 
 
 //grab the user details
-$db = mysqli_connect("localhost", "cli", "clipassword", "users");
+$db = mysqli_connect("localhost", "root", "continuum", "users");
 $query = "SELECT * FROM users where username='".$_COOKIE['username']."'";
 $result = mysqli_query($db, $query);
 $userdetails = mysqli_fetch_assoc($result);
@@ -125,10 +134,6 @@ if (isset($_GET['page'])) {
 				
 		case "cron":
 		$subtitle = "Cron Job Checklist";
-		break;
-				
-		case "sync":
-		$subtitle = "Imported Sync Logs";
 		break;
 				
 		default:
@@ -270,9 +275,6 @@ mysqli_close($connect);
                             <a href="index.php?page=logs"><i class="fa fa-bar-chart-o fa-fw"></i> Error Logs</a>
                         </li>
 						<li>
-                            <a href="index.php?page=sync"><i class="fa fa-cloud fa-fw"></i> Sync Logs</a>
-                        </li>
-						<li>
                             <a href="index.php?page=tools"><i class="fa fa-wrench fa-fw"></i> Report Tools</a>
                         </li>
 						<li>
@@ -330,7 +332,7 @@ mysqli_close($connect);
 				preg_match_all('!\d+!', $_POST['codesearch'], $matches);
 				$caser = count($matches[0]);
 				
-				$con = mysqli_connect("localhost", "chrisluk", "continuum", "reporting");
+				$con = mysqli_connect("localhost", "root", "continuum", "reporting");
 				
 				switch ($caser) {
 				case 0:
@@ -370,28 +372,24 @@ mysqli_close($connect);
 				if (isset($_GET['page'])) {
 				switch($_GET['page']) {
 				case "tools":
-				require_once("/var/www/html/CLI/tools.php");
+				require_once("tools.php");
 				break;
 				
 				case "logs":
-				require_once("/var/www/html/CLI/logs.php");
+				require_once("logs.php");
 				break;
 				
 				case "cron":
-				require_once("/var/www/html/CLI/checklist.php");
+				require_once("checklist.php");
 				break;
-				
-				case "sync":
-				require_once("/var/www/html/CLI/sync.php");
-				break;
-				
+                    
 				default:
-				require_once("/var/www/html/CLI/dash.php");
+				require_once("dash.php");
 				break;
 				}
 				} else {
 				//default page
-				require_once("/var/www/html/CLI/dash.php");
+				require_once("dash.php");
 				}
 				
 			?>
@@ -473,17 +471,8 @@ mysqli_close($connect);
     });
     </script>
 	
-		    <script>
-    $(document).ready(function() {
-		$.extend( $.fn.dataTable.defaults, {
-			"iDisplayLength": 12
-		} );
-        $('#dataTables-sync').dataTable();
-    });
-    </script>
-	
 	<?php
-	$db = mysqli_connect("localhost", "chrisluk", "continuum", "reporting");
+	$db = mysqli_connect("localhost", "root", "continuum", "reporting");
 	$result = mysqli_query($db,"SELECT file, COUNT(*) FROM (SELECT file FROM errors UNION ALL SELECT file FROM data UNION ALL SELECT file FROM php) s GROUP BY file ORDER BY COUNT(*) DESC;");
 	$errors = mysqli_fetch_all($result);
 	$datas = "";

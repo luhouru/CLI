@@ -4,28 +4,28 @@ function recentgen($tablename) {
 // Connecting to database
 
 $tbody = '';
-$connection = mysql_connect("localhost", "chrisluk", "continuum");
-$db_name = 'reporting';
-mysql_select_db($db_name, $connection);
+$connection = mysqli_connect("localhost", "root", "continuum", "reporting");
+/*$db_name = 'reporting';
+mysql_select_db($db_name, $connection);*/
 
 $current_time = time();
 $last24hours = $current_time - 86400;
 
 if ($tablename == "data") {
 	$query = "SELECT time, email, major, minor, message, file, extra, data, line FROM data;";
-	$result = mysql_query($query);
+	$result = mysqli_query($connection, $query);
 }
 if ($tablename == "errors") {
 	$query = "SELECT time, email, major, minor, message, file, extra, data, line FROM errors;";
-	$result = mysql_query($query);
+	$result = mysqli_query($connection, $query);
 }
 if ($tablename == "lost") {
 	$query = "SELECT time, email, major, minor, message, file, extra, data, line FROM lost;";
-	$result = mysql_query($query);
+	$result = mysqli_query($connection, $query);
 }
 if ($tablename == "php") {
 	$query = "SELECT time, email, major, minor, message, file, extra, data, line FROM php;";
-	$result = mysql_query($query);
+	$result = mysqli_query($connection, $query);
 }
 
 if ($result === false) {
@@ -33,12 +33,12 @@ if ($result === false) {
 }
 
 // Display table
-while ($table = mysql_fetch_row($result)) {
-	mysql_data_seek($result, 0);
-	if (mysql_num_rows($result)) {
+while ($table = mysqli_fetch_row($result)) {
+	mysqli_data_seek($result, 0);
+	if (mysqli_num_rows($result)) {
 		$inc = 0;
-		mysql_data_seek($result, 0);
-		while($row = mysql_fetch_row($result)) {
+		mysqli_data_seek($result, 0);
+		while($row = mysqli_fetch_row($result)) {
 			//if ($inc >= $startpt && $inc <= $endpt) {
 				$tbody .= "<tr>\n";
 				$count = 1;

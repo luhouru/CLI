@@ -2,7 +2,7 @@
 
 function checklogin($username, $password) {
 
-$db = mysqli_connect("localhost", "cli", "clipassword", "users");
+$db = mysqli_connect("localhost", "root", "continuum", "users");
 		
 	if (!$db) {
 		return 2;
